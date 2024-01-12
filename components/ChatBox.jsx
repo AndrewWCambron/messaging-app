@@ -27,7 +27,7 @@ export default function ChatBox() {
         sendChatMessage(messageText);
     }
 
-    const handleKeyPress = (event) => {
+    const handleKeyPress = (e) => {
         if (e.charCode !== 13 || messageTextIsEmpty) {
             return;
         }
@@ -36,22 +36,23 @@ export default function ChatBox() {
     }
 
     const messages = receivedMessages.map((message, index) => {
-        const author = message.connectionId === ably.connection.id ? "me" : "other";
-        return <span key={index} className={styles.message} data-author={author}>{message.data}</span>;
-    });
+       const author = message.connectionId === ably.connection.id ? "me" : "other";
+        return <span key={index} className={styles.message} data-author={author}>
+                  {message.data}
+               </span>
+      });
 
-    <div ref={(element) => { messageEnd = element; }}></div>
+    <div ref={(element) => { messageEnd = element; }}/>
 
     useEffect(() => {
         messageEnd.scrollIntoView({ behaviour: "smooth" });
     });
 
-  
     return (
         <div className={styles.chatHolder}>
           <div className={styles.chatText}>
             {messages}
-            <div ref={(element) => { messageEnd = element; }}></div>
+            <div ref={(element) => { messageEnd = element; }}/>
           </div>
           <form onSubmit={handleFormSubmission} className={styles.form}>
             <textarea
@@ -61,11 +62,9 @@ export default function ChatBox() {
               onChange={e => setMessageText(e.target.value)}
               onKeyPress={handleKeyPress}
               className={styles.textarea}
-            ></textarea>
+            />
             <button type="submit" className={styles.button} disabled={messageTextIsEmpty}>Send</button>
           </form>
         </div>
         )
 }
-
-
